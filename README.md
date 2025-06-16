@@ -22,9 +22,9 @@ sql_str <- paste0("
 ```
 
 Example of use:
-
+```
 Rscript curate_dataset.R -l input.tsv -merge_by participant_id
-
+```
 
 Options include
 
