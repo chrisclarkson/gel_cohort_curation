@@ -10,7 +10,7 @@ sql_str <- paste0("
     FROM panels_applied pa
     LEFT JOIN rare_diseases_participant_phenotype rd ON pa.participant_id = rd.participant_id
     LEFT JOIN participant_summary p ON pa.participant_id = p.participant_id
-    WHERE pa.sample_id IN (", sample_str, ");
+    WHERE pa.sample_id IN ('LP300000','LP300001'....);
   ")
   
   result <- labkey.executeSql(
@@ -20,6 +20,11 @@ sql_str <- paste0("
     sql = sql_str
   )
 ```
+
+Example of use:
+
+Rscript curate_dataset.R -l input.tsv -merge_by participant_id
+
 
 Options include
 
@@ -39,8 +44,22 @@ Options include
 ("-r", "--prefix") "remove prefix of column on which search is being performed", metavar = "character")
 ```
 
+Define cases and controls according to a criteria:
+```
+Rscript curate_dataset.R --disease "panel_name=Hereditary ataxia,phenotype contains epilepsy,normalised_hpo_term contains intellectual disability,code_description contains mitochondrial"
+```
 
+If the sex yob and ancestry alone are required for a list of samples (selecting by participant_id- as opposed to plate_key):
+```
+Rscript curate_dataset.R -l input.tsv -merge_by participant_id -a F
+```
 
-Examples of use include:
+If the list of samples is in a column where a suffix/ prefixt needs to be removed:
+```
+Rscript curate_dataset.R -l input.tsv --prefix "/path/to/data/" --suffix ".bam"
+```
 
-Rscript curate_dataset.R -l input.tsv -merge_by participant_id
+If you want the data for the top 10 rows (ranked according to some column e.g. repeat sie):
+```
+Rscript curate_dataset.R -l input.tsv -n 10 -k repeat_size
+```
