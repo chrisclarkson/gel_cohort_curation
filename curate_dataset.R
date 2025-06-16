@@ -5,29 +5,36 @@ library(dplyr)
 
 
 option_list <- list(
-    make_option(c("-d", "--disease"), type = "character", default = NULL,
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-l", "--list"), type = "character", default = NULL,
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-m", "--merge_by"), type = "character", default = 'plate_key',
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-o", "--output"), type = "character", default = 'out.tsv',
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-c", "--control_age_cuttoff"), type = "character", default = 'out.tsv',
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-p", "--get_paths"), type = "character", default = 'TRUE',
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-n", "--number"), type = "integer", default = NULL,
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-a", "--annotate"), type = "character", default = 'TRUE',
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-e", "--cancer_genomes"), type = "character", default = NULL,
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character"),
-    make_option(c("-k", "--order_by"), type = "character", default = NULL,
-              help = "Disease term to filter by (e.g., 'hypertension')", metavar = "character")
+  make_option(c("-d", "--disease"), type = "character", default = NULL,
+              help = "Disease term by which to define a row as case or control by (e.g., 'hypertension')- see readme for how to specify", metavar = "character"),
+  make_option(c("-l", "--list"), type = "character", default = NULL,
+              help = "file with list of patients (in the first column) that need to be annotated- output annotations will be merged to this file (including other columns)- if none is supplied all patients in 'panels_applied' will be annotated", metavar = "character"),
+  make_option(c("-m", "--merge_by"), type = "character", default = "plate_key",
+              help = "If the supplied --list input file needs to be searched according to a column other than the first one- please input that column name here", 
+              metavar = "character"),
+  make_option(c("-o", "--output"), type = "character", default = "out.tsv",
+              help = "output file into which the data will be put- default is 'out.tsv'", metavar = "character"),
+  make_option(c("-c", "--control_age_cutoff"), type = "character", default = "out.tsv",
+              help = "Year of birth at which to remove controls- defined according to '--disease'", metavar = "character"),
+  make_option(c("-p", "--get_paths"), type = "character", default = "TRUE",
+              help = "option to get paths to cram files and genome versions- default = TRUE", metavar = "character"),
+  make_option(c("-n", "--number"), type = "integer", default = NULL,
+              help = "option to take first n rows in from '--list' option", metavar = "character"),
+  make_option(c("-a", "--annotate"), type = "character", default = "TRUE",
+              help = "option to annotate rows with disease according to 'panels applied, phenotype and hpo terms'", metavar = "character"),
+  make_option(c("-e", "--cancer_genomes"), type = "character", default = NULL,
+              help = "include cancer genomes as controls", metavar = "character"),
+  make_option(c("-k", "--order_by"), type = "character", default = NULL,
+              help = "order the input and output file according to a particular column- specify column name", metavar = "character"),
+  make_option(c("-s", "--suffix"), type = "character", default = NULL,
+              help = "remove suffix of column on which search is being performed", metavar = "character"),
+  make_option(c("-r", "--prefix"), type = "character", default = NULL,
+              help = "remove prefix of column on which search is being performed", metavar = "character")
 )
+
 opt_parser <- OptionParser(option_list = option_list)
 opt <- parse_args(opt_parser)
+
 
 
 query=function(patients){
