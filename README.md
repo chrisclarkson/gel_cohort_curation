@@ -67,4 +67,4 @@ Rscript curate_dataset.R -l input.tsv -n 10 -k repeat_size
 
 
 `andrew_sharp_plots.R` enables me to examine the enrichment of cases for a given disease at with mutation of interest e.g. a repeat expansion:
-![plot](./RC_vs_EH.png)
+![plot](./exemplary_as_plot.png)
