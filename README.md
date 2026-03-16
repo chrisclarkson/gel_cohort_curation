@@ -65,6 +65,22 @@ Rscript curate_dataset.R -l input.tsv -n 10 -k repeat_size
 ```
 
 
-
-`andrew_sharp_plots.R` enables me to examine the enrichment of cases for a given disease at with mutation of interest e.g. a repeat expansion:
+`andrew_sharp_plots.R` enables one to examine the enrichment of cases for a given disease at with mutation of interest e.g. a repeat expansion:
+```
+source('/re_gecip/shared_allGeCIPs/AT_CC/GMS_and_100K_combined/andrew_sharp_plots/andrew_sharp_plots.R')
+for(gene in c('BALAP','ADARB1','BCLAF3','E2F4','KCNN3','MEF2A','ZNF384')){
+    g=sharp_plot_delia_latest(
+        repeat_size_data=paste0('/re_gecip/neurology/Kristina/research/MIAMI/chris_tables/',gene,'_100K_and_GMS_cases.tsv'),
+        control_data=paste0('/re_gecip/neurology/Kristina/research/MIAMI/chris_tables/',gene,'_100K_and_GMS_controls.tsv'),
+        gene,'gene',LongAllele_col='a2',case_solved_col='Case.Solved.Family',
+        include_ci=F,handle_infinite_values='set to maximum',log10=T,
+        start_from=0,export_used_data=TRUE)
+    png(paste0(gene,'_log.png'))
+    print(ggarrange(g$hist_plot,g$unsolved_vs_solved_plot,g$unsolved_vs_controls_plot,ncol=1))
+    dev.off()
+}
+```
+Example figure:
 ![plot](./exemplary_as_plot.png)
+
+
